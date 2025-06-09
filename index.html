@@ -22,8 +22,8 @@
   <h1>Google Sheets 公開資料顯示</h1>
   <table id="data-table"></table>
 
-  <!-- 載入 Tabletop.js -->
-  <script src="https://cdn.jsdelivr.net/npm/tabletop@1.6.0/tabletop.min.js"></script>
+  <!-- 改用 unpkg CDN 載入 Tabletop.js -->
+  <script src="https://unpkg.com/tabletop@1.6.0/tabletop.min.js"></script>
   <script>
     window.onload = function() {
       const publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1z1Pvo8OlwJs2NBrwg1LBnF61aN_QSU2d5o53ykqFt90/pubhtml';
@@ -34,13 +34,11 @@
           table.innerHTML = '<tr><td>無資料</td></tr>';
           return;
         }
-        // 產生表頭
         const headers = Object.keys(data[0]);
         let html = '<tr>';
         headers.forEach(h => html += `<th>${h}</th>`);
         html += '</tr>';
 
-        // 產生內容列
         data.forEach(row => {
           html += '<tr>';
           headers.forEach(h => {
