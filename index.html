@@ -6,80 +6,149 @@
   <style>
     body {
       font-family: "Microsoft JhengHei", sans-serif;
-      padding: 40px;
-      background-color: #f8f9fa;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 40px 20px;
       color: #333;
-      max-width: 800px;
-      margin: auto;
     }
-    label { display: block; margin-top: 20px; }
-    input, select { margin-top: 5px; width: 100%; padding: 10px; }
-    button {
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #28a745;
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
       margin-top: 20px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    select,
+    input[type="file"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-top: 8px;
+      box-sizing: border-box;
+    }
+
+    .checkbox-group {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .checkbox-group label {
+      font-weight: normal;
+      background: #f8f9fa;
+      border: 1px solid #ccc;
+      padding: 6px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .checkbox-group input {
+      margin-right: 5px;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      margin-top: 30px;
       background-color: #28a745;
       color: white;
       border: none;
-      padding: 10px 20px;
+      padding: 12px;
       font-size: 16px;
-      border-radius: 5px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
     }
-    #statusMsg { margin-top: 20px; font-weight: bold; }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    #statusMsg {
+      margin-top: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
-  <h1>拼車登記表單</h1>
-  <form id="carpoolForm">
-    <label>姓名:
-      <label><input type="checkbox" name="name" value="yating"> yating</label>
-      <label><input type="checkbox" name="name" value="ming"> ming</label>
-      <label><input type="checkbox" name="name" value="其他"> 其他</label>
-    </label>
+  <div class="container">
+    <h1>拼車登記表單</h1>
+    <form id="carpoolForm">
+      <label>姓名:</label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="name" value="yating"> yating</label>
+        <label><input type="checkbox" name="name" value="ming"> ming</label>
+        <label><input type="checkbox" name="name" value="其他"> 其他</label>
+      </div>
 
-    <label>通路(買了啥):
-      <input type="text" name="purchase_channel" required>
-    </label>
+      <label>通路（買了啥）:
+        <input type="text" name="purchase_channel" required>
+      </label>
 
-    <label>收誰:
-      <label><input type="checkbox" name="recipient" value="志"> 志</label>
-      <label><input type="checkbox" name="recipient" value="粒"> 粒</label>
-      <label><input type="checkbox" name="recipient" value="溜"> 溜</label>
-      <label><input type="checkbox" name="recipient" value="領"> 領</label>
-      <label><input type="checkbox" name="recipient" value="娜"> 娜</label>
-      <label><input type="checkbox" name="recipient" value="其他"> 其他</label>
-    </label>
+      <label>收誰:</label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="recipient" value="志"> 志</label>
+        <label><input type="checkbox" name="recipient" value="粒"> 粒</label>
+        <label><input type="checkbox" name="recipient" value="溜"> 溜</label>
+        <label><input type="checkbox" name="recipient" value="領"> 領</label>
+        <label><input type="checkbox" name="recipient" value="娜"> 娜</label>
+        <label><input type="checkbox" name="recipient" value="其他"> 其他</label>
+      </div>
 
-    <label>跟誰的車(代購):
-      <select name="partner_car" required>
-        <option value="">--請選擇--</option>
-        <option value="火車">火車</option>
-        <option value="未來">未來</option>
-        <option value="boya">boya</option>
-      </select>
-    </label>
+      <label>跟誰的車（代購）:
+        <select name="partner_car" required>
+          <option value="">--請選擇--</option>
+          <option value="火車">火車</option>
+          <option value="未來">未來</option>
+          <option value="boya">boya</option>
+        </select>
+      </label>
 
-    <label>誰付:
-      <select name="payer" required>
-        <option value="">--請選擇--</option>
-        <option value="yating">yating</option>
-        <option value="ming">ming</option>
-      </select>
-    </label>
+      <label>誰付:
+        <select name="payer" required>
+          <option value="">--請選擇--</option>
+          <option value="yating">yating</option>
+          <option value="ming">ming</option>
+        </select>
+      </label>
 
-    <label>匯款金額:
-      <input type="text" name="amount" required>
-    </label>
+      <label>匯款金額:
+        <input type="text" name="amount" required>
+      </label>
 
-    <label>憑證（僅欄位展示，未上傳）:
-      <input type="file" name="voucher" accept="image/*">
-    </label>
+      <label>憑證（僅欄位展示，未上傳）:
+        <input type="file" name="voucher" accept="image/*">
+      </label>
 
-    <label>時間:
-      <input type="date" name="date" required>
-    </label>
+      <label>時間:
+        <input type="date" name="date" required>
+      </label>
 
-    <button type="submit">送出</button>
-    <div id="statusMsg"></div>
-  </form>
+      <button type="submit">🚗 送出</button>
+      <div id="statusMsg"></div>
+    </form>
+  </div>
 
   <script>
     const form = document.getElementById('carpoolForm');
