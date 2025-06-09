@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>拼車系統</title>
+  <style>
+    body {
+      font-family: "Microsoft JhengHei", sans-serif;
+      padding: 40px;
+      background-color: #f8f9fa;
+      color: #333;
+      max-width: 800px;
+      margin: auto;
+    }
+    label { display: block; margin-top: 20px; }
+    input, select { margin-top: 5px; width: 100%; padding: 10px; }
+    button {
+      margin-top: 20px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+    }
+    #statusMsg { margin-top: 20px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>拼車登記表單</h1>
+  <form id="carpoolForm">
+    <label>姓名:
+      <label><input type="checkbox" name="name" value="yating"> yating</label>
+      <label><input type="checkbox" name="name" value="ming"> ming</label>
+      <label><input type="checkbox" name="name" value="其他"> 其他</label>
+    </label>
+
+    <label>通路(買了啥):
+      <input type="text" name="purchase_channel" required>
+    </label>
+
+    <label>收誰:
+      <label><input type="checkbox" name="recipient" value="志"> 志</label>
+      <label><input type="checkbox" name="recipient" value="粒"> 粒</label>
+      <label><input type="checkbox" name="recipient" value="溜"> 溜</label>
+      <label><input type="checkbox" name="recipient" value="領"> 領</label>
+      <label><input type="checkbox" name="recipient" value="娜"> 娜</label>
+      <label><input type="checkbox" name="recipient" value="其他"> 其他</label>
+    </label>
+
+    <label>跟誰的車(代購):
+      <select name="partner_car" required>
+        <option value="">--請選擇--</option>
+        <option value="志">志</option>
+        <option value="粒">粒</option>
+        <option value="溜">溜</option>
+        <option value="領">領</option>
+        <option value="娜">娜</option>
+        <option value="其他">其他</option>
+      </select>
+    </label>
+
+    <label>誰付:
+      <select name="payer" required>
+        <option value="">--請選擇--</option>
+        <option value="yating">yating</option>
+        <option value="ming">ming</option>
+      </select>
+    </label>
+
+    <label>匯款金額:
+      <input type="text" name="amount" required>
+    </label>
+
+    <label>憑證（僅欄位展示，未上傳）:
+      <input type="file" name="voucher" accept="image/*">
+    </label>
+
+    <label>時間:
+      <input type="date" name="date" required>
+    </label>
+
+    <button type="submit">送出</button>
+    <div id="statusMsg"></div>
+  </form>
+
+  <script>
+    const form = document.getElementById('carpoolForm');
+    const statusMsg = document.getElementById('statusMsg');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+
+      const data = {
+        name: formData.getAll('name'),
+        purchase_channel: formData.get('purchase_channel'),
+        recipient: formData.getAll('recipient'),
+        partner_car: formData.get('partner_car'),
+        payer: formData.get('payer'),
+        amount: formData.get('amount'),
+        date: formData.get('date')
+      };
+
+      statusMsg.textContent = '📡 傳送中...';
+
+      try {
+        const res = await fetch('https://gas-proxy.za91410.workers.dev/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+        if (result.result === '成功') {
+          statusMsg.textContent = '✅ 成功送出';
+          form.reset();
+        } else {
+          statusMsg.textContent = '⚠️ 傳送失敗，請稍後再試';
+        }
+      } catch (err) {
+        statusMsg.textContent = '❌ 錯誤：' + err.message;
+      }
+    });
+  </script>
+</body>
+</html>
