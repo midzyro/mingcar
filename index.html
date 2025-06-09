@@ -34,13 +34,14 @@
   <table id="sheet-data"></table>
 
   <script>
-    // ✅ 替換成你部署的 Apps Script 網址
     const scriptURL = 'https://script.google.com/macros/s/AKfycbwt9hQWyeXMHuyY4LBXKjBrlMpq7CAIaaMT5JTVAPuKYBasfQ3Pw_FfChuuAmjUN3AjJQ/exec';
-
+  
     fetch(scriptURL)
       .then(response => response.json())
       .then(data => {
         const table = document.getElementById('sheet-data');
+        table.innerHTML = '';  // 清空表格內容
+  
         data.forEach((row, rowIndex) => {
           const tr = document.createElement('tr');
           row.forEach(cell => {
@@ -53,6 +54,7 @@
       })
       .catch(error => {
         console.error('讀取資料時發生錯誤：', error);
+        document.getElementById('sheet-data').innerHTML = '<tr><td colspan="10">讀取資料失敗，請稍後再試。</td></tr>';
       });
   </script>
 
