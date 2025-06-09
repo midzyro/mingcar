@@ -2,194 +2,59 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <title>拼車系統</title>
+  <title>拼車</title>
   <style>
-    body {
-      font-family: "Microsoft JhengHei", sans-serif;
-      background-color: #f0f2f5;
-      margin: 0;
-      padding: 40px 20px;
-      color: #333;
-    }
-
-    .container {
-      max-width: 700px;
-      margin: auto;
-      background: #fff;
-      padding: 30px 40px;
-      border-radius: 12px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-    }
-
-    h1 {
-      text-align: center;
-      color: #28a745;
-      margin-bottom: 30px;
-    }
-
-    label {
-      display: block;
-      margin-top: 20px;
-      font-weight: bold;
-    }
-
-    input[type="text"],
-    input[type="date"],
-    select,
-    input[type="file"] {
+    iframe {
       width: 100%;
-      padding: 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      margin-top: 8px;
-      box-sizing: border-box;
-    }
-
-    .checkbox-group {
-      margin-top: 10px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .checkbox-group label {
-      font-weight: normal;
-      background: #f8f9fa;
-      border: 1px solid #ccc;
-      padding: 6px 10px;
-      border-radius: 8px;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .checkbox-group input {
-      margin-right: 5px;
-    }
-
-    button {
-      display: block;
-      width: 100%;
-      margin-top: 30px;
-      background-color: #28a745;
-      color: white;
+      height: 800px;
       border: none;
-      padding: 12px;
-      font-size: 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s;
     }
-
-    button:hover {
-      background-color: #218838;
-    }
-
-    #statusMsg {
+    table {
+      border-collapse: collapse;
+      width: 100%;
       margin-top: 20px;
-      font-weight: bold;
-      text-align: center;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>拼車登記表單</h1>
-    <form id="carpoolForm">
-      <label>姓名:</label>
-      <div class="checkbox-group">
-        <label><input type="checkbox" name="name" value="yating"> yating</label>
-        <label><input type="checkbox" name="name" value="ming"> ming</label>
-        <label><input type="checkbox" name="name" value="其他"> 其他</label>
-      </div>
 
-      <label>通路（買了啥）:
-        <input type="text" name="purchase_channel" required>
-      </label>
+  <h2>請填寫以下問卷：</h2>
+  <!-- ✅ 替換成你的 Google 表單網址 -->
+  <iframe src="https://docs.google.com/forms/d/e/1z1Pvo8OlwJs2NBrwg1LBnF61aN_QSU2d5o53ykqFt90/viewform?embedded=true">載入中…</iframe>
 
-      <label>收誰:</label>
-      <div class="checkbox-group">
-        <label><input type="checkbox" name="recipient" value="志"> 志</label>
-        <label><input type="checkbox" name="recipient" value="粒"> 粒</label>
-        <label><input type="checkbox" name="recipient" value="溜"> 溜</label>
-        <label><input type="checkbox" name="recipient" value="領"> 領</label>
-        <label><input type="checkbox" name="recipient" value="娜"> 娜</label>
-        <label><input type="checkbox" name="recipient" value="其他"> 其他</label>
-      </div>
-
-      <label>跟誰的車（代購）:
-        <select name="partner_car" required>
-          <option value="">--請選擇--</option>
-          <option value="火車">火車</option>
-          <option value="未來">未來</option>
-          <option value="boya">boya</option>
-          <option value="其他">其他</option>
-        </select>
-      </label>
-
-      <label>誰付:
-        <select name="payer" required>
-          <option value="">--請選擇--</option>
-          <option value="yating">yating</option>
-          <option value="ming">ming</option>
-        </select>
-      </label>
-
-      <label>匯款金額:
-        <input type="text" name="amount" required>
-      </label>
-
-      <label>憑證（僅欄位展示，未上傳）:
-        <input type="file" name="voucher" accept="image/*">
-      </label>
-
-      <label>時間:
-        <input type="date" name="date" required>
-      </label>
-
-      <button type="submit">🚗 送出</button>
-      <div id="statusMsg"></div>
-    </form>
-  </div>
+  <h2>問卷回應資料：</h2>
+  <table id="sheet-data"></table>
 
   <script>
-    const form = document.getElementById('carpoolForm');
-    const statusMsg = document.getElementById('statusMsg');
+    // ✅ 替換成你部署的 Apps Script 網址
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwt9hQWyeXMHuyY4LBXKjBrlMpq7CAIaaMT5JTVAPuKYBasfQ3Pw_FfChuuAmjUN3AjJQ/exec';
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const formData = new FormData(form);
-
-      const data = {
-        name: formData.getAll('name'),
-        purchase_channel: formData.get('purchase_channel'),
-        recipient: formData.getAll('recipient'),
-        partner_car: formData.get('partner_car'),
-        payer: formData.get('payer'),
-        amount: formData.get('amount'),
-        date: formData.get('date')
-      };
-
-      statusMsg.textContent = '📡 傳送中...';
-
-      try {
-        const res = await fetch('https://script.google.com/macros/s/AKfycbwt9hQWyeXMHuyY4LBXKjBrlMpq7CAIaaMT5JTVAPuKYBasfQ3Pw_FfChuuAmjUN3AjJQ/exec', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
+    fetch(scriptURL)
+      .then(response => response.json())
+      .then(data => {
+        const table = document.getElementById('sheet-data');
+        data.forEach((row, rowIndex) => {
+          const tr = document.createElement('tr');
+          row.forEach(cell => {
+            const cellElement = document.createElement(rowIndex === 0 ? 'th' : 'td');
+            cellElement.textContent = cell;
+            tr.appendChild(cellElement);
+          });
+          table.appendChild(tr);
         });
-
-        const result = await res.json();
-        if (result.result === '成功') {
-          statusMsg.textContent = '✅ 成功送出';
-          form.reset();
-        } else {
-          statusMsg.textContent = '⚠️ 傳送失敗，請稍後再試';
-        }
-      } catch (err) {
-        statusMsg.textContent = '❌ 錯誤：' + err.message;
-      }
-    });
+      })
+      .catch(error => {
+        console.error('讀取資料時發生錯誤：', error);
+      });
   </script>
+
 </body>
 </html>
