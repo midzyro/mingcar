@@ -22,7 +22,7 @@
 <body>
 
   <h2>請點選以下連結填寫問卷：</h2>
-  <a href="https://script.google.com/macros/s/AKfycbwt9hQWyeXMHuyY4LBXKjBrlMpq7CAIaaMT5JTVAPuKYBasfQ3Pw_FfChuuAmjUN3AjJQ/exec">
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLSftLaNW0bUcy_0w8qUFe71AOdjkZ-3ew1h0yp8j2iIRMEj45g/viewform?usp=dialog">
     開啟 Google 表單填寫問卷
   </a>
 
@@ -30,7 +30,7 @@
   <table id="sheet-data"></table>
 
   <script>
-    const scriptURL = 'https://gas-proxy.za91410.workers.dev/'; // 你的 Cloudflare Workers 地址
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwt9hQWyeXMHuyY4LBXKjBrlMpq7CAIaaMT5JTVAPuKYBasfQ3Pw_FfChuuAmjUN3AjJQ/exec'; // 你的 Cloudflare Workers 地址
 
     fetch(scriptURL)
       .then(response => response.json())
