@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <title>拼車</title>
+  <meta charset="UTF-8" />
+  <title>拼車問卷與回應</title>
   <style>
     iframe {
       width: 100%;
@@ -27,33 +27,49 @@
 <body>
 
   <h2>請填寫以下問卷：</h2>
-  <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSftLaNW0bUcy_0w8qUFe71AOdjkZ-3ew1h0yp8j2iIRMEj45g/viewform?usp=dialog">載入中…</iframe>
+  <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSftLaNW0bUcy_0w8qUFe71AOdjkZ-3ew1h0yp8j2iIRMEj45g/viewform?usp=dialog">
+    載入中…
+  </iframe>
 
   <h2>問卷回應資料：</h2>
-  <table id="sheet-data"></table>
+  <table id="sheet-data">
+    <tr><td>資料載入中...</td></tr>
+  </table>
 
   <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwt9hQWyeXMHuyY4LBXKjBrlMpq7CAIaaMT5JTVAPuKYBasfQ3Pw_FfChuuAmjUN3AjJQ/exec';
+    const sheetURL = 'https://opensheet.vercel.app/1z1Pvo8OlwJs2NBrwg1LBnF61aN_QSU2d5o53ykqFt90/表單回應%201';
 
-    fetch(scriptURL)
-      .then(response => response.json())
+    fetch(sheetURL)
+      .then(res => res.json())
       .then(data => {
         const table = document.getElementById('sheet-data');
         table.innerHTML = '';
 
-        data.forEach((row, rowIndex) => {
+        // 產生表頭
+        const headers = Object.keys(data[0]);
+        const thead = document.createElement('tr');
+        headers.forEach(h => {
+          const th = document.createElement('th');
+          th.textContent = h;
+          thead.appendChild(th);
+        });
+        table.appendChild(thead);
+
+        // 產生資料列
+        data.forEach(row => {
           const tr = document.createElement('tr');
-          row.forEach(cell => {
-            const cellElement = document.createElement(rowIndex === 0 ? 'th' : 'td');
-            cellElement.textContent = cell;
-            tr.appendChild(cellElement);
+          headers.forEach(h => {
+            const td = document.createElement('td');
+            td.textContent = row[h];
+            tr.appendChild(td);
           });
           table.appendChild(tr);
         });
       })
-      .catch(error => {
-        console.error('讀取資料時發生錯誤：', error);
-        document.getElementById('sheet-data').innerHTML = '<tr><td colspan="10">讀取資料失敗，請稍後再試。</td></tr>';
+      .catch(err => {
+        console.error('讀取失敗：', err);
+        const table = document.getElementById('sheet-data');
+        table.innerHTML = '<tr><td colspan="10">讀取資料失敗，請稍後再試。</td></tr>';
       });
   </script>
 
